@@ -98,7 +98,7 @@
 	"publisher": "zhanghongjie",
 	"repository": {
 		"type" : "git",
-		"url" : "https://github.com/npm/cli.git"
+		"url" : "https://github.com/zhjgh/uploadImage-to-qiniu.git"
 	},
 	"license": "UNLICENSED"
 }
