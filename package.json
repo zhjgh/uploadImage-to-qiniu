@@ -2,7 +2,7 @@
 	"name": "uploadimage-to-qiniu",
 	"displayName": "uploadimage-to-qiniu",
 	"description": "选择图片上传到七牛云获取url链接",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.64.0"
 	},
@@ -97,8 +97,8 @@
 	},
 	"publisher": "zhanghongjie",
 	"repository": {
-		"type" : "git",
-		"url" : "https://github.com/zhjgh/uploadImage-to-qiniu.git"
+		"type": "git",
+		"url": "https://github.com/zhjgh/uploadImage-to-qiniu.git"
 	},
 	"license": "UNLICENSED"
 }
