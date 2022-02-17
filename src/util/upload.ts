@@ -49,7 +49,8 @@ export const upImageToQiniu = async (
   // var key = new Date().getTime();
   const file = filePathArr.pop();
   const fileName = file?.split('.')[0];
-  const keyToOverwrite = `${upConfig.directory}/${fileName}-${new Date().getTime()}`;
+  const fileType = file?.split('.')[1];
+  const keyToOverwrite = `${upConfig.directory}/${fileName}-${new Date().getTime()}.${fileType}`;
   // 上传调用方法
   const uploadFnName = gzipImage ? 'putStream' : 'putFile';
   // 上传内容
