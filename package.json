@@ -2,7 +2,7 @@
 	"name": "uploadimage-to-qiniu",
 	"displayName": "uploadimage-to-qiniu",
 	"description": "选择图片上传到七牛云获取url链接",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"engines": {
 		"vscode": "^1.64.0"
 	},
