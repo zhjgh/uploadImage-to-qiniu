@@ -33,7 +33,9 @@ export function activate(context: vscode.ExtensionContext) {
         domain: qiniuConfig.domain,
         gzip: qiniuConfig.gzip,
         scope: qiniuConfig.scope,
-        directory: qiniuConfig.directory
+        directory: qiniuConfig.directory,
+        imageWidth: qiniuConfig.imageWidth,
+        formatWebp: qiniuConfig.formatWebp
       };
       const loaclFile = uri[0].fsPath;
       upImageToQiniu(
@@ -41,6 +43,14 @@ export function activate(context: vscode.ExtensionContext) {
         (res: string) => {
           let url = res;
           // 将图片链接写入编辑器
+          if(upConfig.imageWidth !== ''){
+            url = `${url}?imageView2/2/w/${upConfig.imageWidth}`;
+          }
+
+          if(upConfig.formatWebp){
+            url = `${url}/format/webp`;
+          }
+
           console.log('图片上传成功', url);
           addImageUrlToEditor(url);
         },

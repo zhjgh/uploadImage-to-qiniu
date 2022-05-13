@@ -63,6 +63,16 @@
 						"type": "string",
 						"default": "",
 						"description": "设置七牛上传指定目录"
+					},
+					"upload_qiniu_config.imageWidth": {
+						"type": "string",
+						"default": "",
+						"description": "设置图片展示宽度"
+					},
+					"upload_qiniu_config.formatWebp": {
+						"type": "boolean",
+						"default": "",
+						"description": "是否自动转成webp格式"
 					}
 				}
 			}

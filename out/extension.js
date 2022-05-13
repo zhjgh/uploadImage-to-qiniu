@@ -33,12 +33,20 @@ function activate(context) {
             domain: qiniuConfig.domain,
             gzip: qiniuConfig.gzip,
             scope: qiniuConfig.scope,
-            directory: qiniuConfig.directory
+            directory: qiniuConfig.directory,
+            imageWidth: qiniuConfig.imageWidth,
+            formatWebp: qiniuConfig.formatWebp
         };
         const loaclFile = uri[0].fsPath;
         (0, upload_1.upImageToQiniu)(loaclFile, (res) => {
             let url = res;
             // 将图片链接写入编辑器
+            if (upConfig.imageWidth !== '') {
+                url = `${url}?imageView2/2/w/${upConfig.imageWidth}`;
+            }
+            if (upConfig.formatWebp) {
+                url = `${url}/format/webp`;
+            }
             console.log('图片上传成功', url);
             addImageUrlToEditor(url);
         }, upConfig);

@@ -18,6 +18,27 @@ const getToken = (accessKey: string, secretKey: string, scope: string) => {
   return uploadToken;
 };
 
+// 图片压缩
+const imageGzip = async (loaclFile: string): Promise<any> => {
+  const bufferFile = await getBufferFromFile(loaclFile);
+  let res;
+  try {
+    res = await imagemin.buffer(bufferFile, {
+      plugins: [
+        imageminJpegtran(),
+        imageminPngquant({
+          quality: [0.6, 0.8],
+        }),
+      ],
+    });
+    console.log('图片压缩成功', res);
+  } catch (err) {
+    vscode.window.showInformationMessage('图片压缩失败');
+    res = null;
+  }
+  return res;
+};
+
 // 七牛上传配置
 export interface QiNiuUpConfig {
   domain: string // 上传后域名
@@ -26,8 +47,11 @@ export interface QiNiuUpConfig {
   scope: string // 七牛上传空间
   gzip: boolean // 是否需要压缩
   directory: string // 指定目录
+  imageWidth: string // 图片展示宽度
+  formatWebp: boolean // 是否自动转成webp格式
 }
 
+// 上传图片到七牛云
 export const upImageToQiniu = async (
   loaclFile: string,
   cb: { (res: any): void; (arg0: any): void },
@@ -43,13 +67,14 @@ export const upImageToQiniu = async (
   const token = getToken(upConfig.accessKey, upConfig.secretKey, upConfig.scope);
   let gzipImage;
   if (upConfig.gzip) {
+    console.log('已经开启压缩');
     gzipImage = await imageGzip(loaclFile);
   }
-  // 获取当前时间戳
-  // var key = new Date().getTime();
   const file = filePathArr.pop();
   const fileName = file?.split('.')[0];
   const fileType = file?.split('.')[1];
+
+  // 文件目录+文件名称
   const keyToOverwrite = `${upConfig.directory}/${fileName}-${new Date().getTime()}.${fileType}`;
   // 上传调用方法
   const uploadFnName = gzipImage ? 'putStream' : 'putFile';
@@ -58,7 +83,6 @@ export const upImageToQiniu = async (
   // 七牛上传
   formUploader[uploadFnName](
     token,
-    // key,
     keyToOverwrite,
     uploadItem,
     putExtra,
@@ -75,23 +99,4 @@ export const upImageToQiniu = async (
       }
     }
   );
-};
-
-const imageGzip = async (loaclFile: string): Promise<any> => {
-  const bufferFile = await getBufferFromFile(loaclFile);
-  let res;
-  try {
-    res = await imagemin.buffer(bufferFile, {
-      plugins: [
-        imageminJpegtran(),
-        imageminPngquant({
-          quality: [0.6, 0.8],
-        }),
-      ],
-    });
-  } catch (err) {
-    vscode.window.showInformationMessage('图片压缩失败');
-    res = null;
-  }
-  return res;
 };

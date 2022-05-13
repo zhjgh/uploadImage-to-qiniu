@@ -19,6 +19,28 @@ const getToken = (accessKey, secretKey, scope) => {
     const uploadToken = putPolicy.uploadToken(mac);
     return uploadToken;
 };
+// 图片压缩
+const imageGzip = async (loaclFile) => {
+    const bufferFile = await (0, base_1.getBufferFromFile)(loaclFile);
+    let res;
+    try {
+        res = await imagemin.buffer(bufferFile, {
+            plugins: [
+                imageminJpegtran(),
+                imageminPngquant({
+                    quality: [0.6, 0.8],
+                }),
+            ],
+        });
+        console.log('图片压缩成功', res);
+    }
+    catch (err) {
+        vscode.window.showInformationMessage('图片压缩失败');
+        res = null;
+    }
+    return res;
+};
+// 上传图片到七牛云
 const upImageToQiniu = async (loaclFile, cb, upConfig) => {
     // 将图片路径统一为 xx/xxx
     const filePathArr = loaclFile.split(path.sep);
@@ -29,22 +51,20 @@ const upImageToQiniu = async (loaclFile, cb, upConfig) => {
     const token = getToken(upConfig.accessKey, upConfig.secretKey, upConfig.scope);
     let gzipImage;
     if (upConfig.gzip) {
+        console.log('已经开启压缩');
         gzipImage = await imageGzip(loaclFile);
     }
-    // 获取当前时间戳
-    // var key = new Date().getTime();
     const file = filePathArr.pop();
     const fileName = file?.split('.')[0];
     const fileType = file?.split('.')[1];
+    // 文件目录+文件名称
     const keyToOverwrite = `${upConfig.directory}/${fileName}-${new Date().getTime()}.${fileType}`;
     // 上传调用方法
     const uploadFnName = gzipImage ? 'putStream' : 'putFile';
     // 上传内容
     const uploadItem = gzipImage ? (0, base_1.bufferToStream)(gzipImage) : path.normalize(loaclFile);
     // 七牛上传
-    formUploader[uploadFnName](token, 
-    // key,
-    keyToOverwrite, uploadItem, putExtra, function (respErr, respBody, respInfo) {
+    formUploader[uploadFnName](token, keyToOverwrite, uploadItem, putExtra, function (respErr, respBody, respInfo) {
         if (respErr) {
             throw respErr;
         }
@@ -58,23 +78,4 @@ const upImageToQiniu = async (loaclFile, cb, upConfig) => {
     });
 };
 exports.upImageToQiniu = upImageToQiniu;
-const imageGzip = async (loaclFile) => {
-    const bufferFile = await (0, base_1.getBufferFromFile)(loaclFile);
-    let res;
-    try {
-        res = await imagemin.buffer(bufferFile, {
-            plugins: [
-                imageminJpegtran(),
-                imageminPngquant({
-                    quality: [0.6, 0.8],
-                }),
-            ],
-        });
-    }
-    catch (err) {
-        vscode.window.showInformationMessage('图片压缩失败');
-        res = null;
-    }
-    return res;
-};
 //# sourceMappingURL=upload.js.map
