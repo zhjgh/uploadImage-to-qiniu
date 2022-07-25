@@ -6,5 +6,8 @@
 ![alt 演示效果](https://zhj-oss-bucket.oss-cn-guangzhou.aliyuncs.com/images/view.gif "演示效果")
 
 ## VSCode设置
-![alt VSCode设置](https://zhj-oss-bucket.oss-cn-guangzhou.aliyuncs.com/images/config.png "VSCode设置")
+![alt VSCode设置](https://zhj-oss-bucket.oss-cn-guangzhou.aliyuncs.com/images/setting.jpg "VSCode设置")
+
+
+
 
