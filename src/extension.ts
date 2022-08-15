@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
         canSelectFolders: false,
         canSelectMany: false,
         filters: {
-          images: ['png', 'jpg', 'gif', 'jpeg', 'svg'],
+          images: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
         },
       });
       if (!uri) {
@@ -43,11 +43,11 @@ export function activate(context: vscode.ExtensionContext) {
         (res: string) => {
           let url = res;
           // 将图片链接写入编辑器
-          if(upConfig.imageWidth !== ''){
+          if (upConfig.imageWidth !== '') {
             url = `${url}?imageView2/2/w/${upConfig.imageWidth}`;
           }
 
-          if(upConfig.formatWebp){
+          if (upConfig.formatWebp) {
             url = `${url}/format/webp`;
           }
 
@@ -95,4 +95,4 @@ function addImageUrlToEditor(url: string) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

@@ -21,7 +21,7 @@ function activate(context) {
             canSelectFolders: false,
             canSelectMany: false,
             filters: {
-                images: ['png', 'jpg', 'gif', 'jpeg', 'svg'],
+                images: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
             },
         });
         if (!uri) {
